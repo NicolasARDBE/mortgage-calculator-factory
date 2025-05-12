@@ -4,7 +4,6 @@ import com.endava.training.mortgage_pages.*;
 
 import com.endava.training.mortgage_pages.CarLoan.*;
 import com.endava.training.mortgage_pages.CheckLenders.LendersParametersPage;
-import com.endava.training.mortgage_pages.CheckLenders.RedirectLenderPage;
 import com.endava.training.mortgage_pages.CheckLenders.ValidateVendor;
 import com.endava.training.mortgage_pages.FriendlyPage.FriendlyTablePage;
 import com.endava.training.mortgage_pages.FriendlyPage.RedirectFriendlyPage;
@@ -45,7 +44,6 @@ public class MortgageCalculatorTest {
     private FriendlyTablePage friendlyTablePage;
 
     private LendersParametersPage lendersParametersPage;
-    private RedirectLenderPage redirectLenderPage;
     private ValidateVendor validateVendor;
 
     @BeforeEach
@@ -69,7 +67,6 @@ public class MortgageCalculatorTest {
         friendlyTablePage = new FriendlyTablePage(driver);
 
         lendersParametersPage = new LendersParametersPage(driver);
-        redirectLenderPage = new RedirectLenderPage(driver);
         validateVendor = new ValidateVendor(driver);
     }
 
