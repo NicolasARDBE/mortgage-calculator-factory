@@ -220,46 +220,82 @@ public class MortgageCalculatorTest {
     }
 
     @Test
-    public void ValidateValuesInFriendlyTable(){
+    public void ValidateValuesInFriendlyTable() {
+        logger.info("Starting ValidateValuesInFriendlyTable test...");
         ExtractValue extractValue = new ExtractValue();
         String interestRate = "4.50";
         String loanTerm = "15";
         String montlyHoa = "100";
         String downPayment = "10";
+
+        logger.info("Opening default page...");
         defaultPage.open();
+
+        logger.info("Entering Interest Rate: {}", interestRate);
         mainCalculator.enterInterestRate(interestRate);
+
+        logger.info("Entering Loan Term: {}", loanTerm);
         mainCalculator.enterLoanTerm(loanTerm);
+
+        logger.info("Entering Monthly HOA: {}", montlyHoa);
         mainCalculator.enterMonthlyHoa(montlyHoa);
+
+        logger.info("Switching to percentage down payment...");
         mainCalculator.changePercentRadio();
+
+        logger.info("Entering Down Payment (percentage): {}", downPayment);
         mainCalculator.enterDownPayment(downPayment);
+
+        logger.info("Clicking calculate...");
         mainCalculator.clickCalculate();
+
+        logger.info("Redirecting to friendly table page...");
         redirectFriendlyPage.clickFriendlyPage();
-        assertEquals(interestRate, extractValue.extractNumericValue
-                (friendlyTablePage.getInterestRate()));
-        assertEquals(loanTerm, extractValue.extractNumericValue
-                (friendlyTablePage.getLoanTerm()));
-        assertEquals(montlyHoa, extractValue.extractNumericValue
-                (friendlyTablePage.getMonthlyHoa()));
-        try{
-            assertEquals(downPayment, extractValue.extractNumericValue
-                    (friendlyTablePage.getDownPayment()));
-        } catch(AssertionError error){
-            System.err.println("Assertion failed: " + error.getMessage());
+
+        logger.info("Validating extracted values from friendly table...");
+        assertEquals(interestRate, extractValue.extractNumericValue(friendlyTablePage.getInterestRate()));
+        assertEquals(loanTerm, extractValue.extractNumericValue(friendlyTablePage.getLoanTerm()));
+        assertEquals(montlyHoa, extractValue.extractNumericValue(friendlyTablePage.getMonthlyHoa()));
+
+        try {
+            assertEquals(downPayment, extractValue.extractNumericValue(friendlyTablePage.getDownPayment()));
+        } catch (AssertionError error) {
+            logger.error("Assertion failed for down payment: {}", error.getMessage());
+            throw error;
         }
+
+        logger.info("ValidateValuesInFriendlyTable test completed successfully.");
     }
 
     @Test
-    public void ValidateLenderRedirection(){
+    public void ValidateLenderRedirection() {
+        logger.info("Starting ValidateLenderRedirection test...");
         ExtractValue extractValue = new ExtractValue();
+
+        logger.info("Opening default page...");
         defaultPage.open();
+
+        logger.info("Entering ZIP code: 07008");
         lendersParametersPage.enterZipCode("07008");
+
+        logger.info("Selecting credit score: 620");
         lendersParametersPage.selectCreditScore("620");
+
+        logger.info("Clicking update lenders...");
         lendersParametersPage.clickOnUpdateLenders();
+
+        logger.info("Clicking view details...");
         lendersParametersPage.clickOnViewDetails();
-        //Acortar la URL hasta el .com
-        assertEquals("https://cash-out-refinance-icbv3.greenlending.com",
-                extractValue.extractBaseUrl(validateVendor.getCurrentUrl()));
+
+        String currentUrl = validateVendor.getCurrentUrl();
+        String baseUrl = extractValue.extractBaseUrl(currentUrl);
+
+        logger.info("Validating redirected base URL: {}", baseUrl);
+        assertEquals("https://cash-out-refinance-icbv3.greenlending.com", baseUrl);
+
+        logger.info("ValidateLenderRedirection test completed successfully.");
     }
+
 
 
     @AfterEach
