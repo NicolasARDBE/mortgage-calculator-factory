@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class MainCalculatorResult {
+public class MainCalculatorResultPage {
 
     private final WebDriver driver;
 
@@ -14,7 +14,7 @@ public class MainCalculatorResult {
     @FindBy(xpath = "//div[contains(., \"Down payment %\")]/h3")
     WebElement downPaymentPercentage;
 
-    public MainCalculatorResult(WebDriver driver) {
+    public MainCalculatorResultPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }

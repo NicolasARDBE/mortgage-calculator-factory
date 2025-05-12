@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class MainCalculator {
+public class MainCalculatorPage {
 
     private final WebDriver driver;
 
@@ -22,7 +22,7 @@ public class MainCalculator {
     @FindBy(css = "div.rw-box.button > input")
     WebElement calculateButton;
 
-    public MainCalculator(WebDriver driver) {
+    public MainCalculatorPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }

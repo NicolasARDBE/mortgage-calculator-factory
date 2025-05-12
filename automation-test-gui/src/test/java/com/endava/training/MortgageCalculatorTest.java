@@ -1,8 +1,6 @@
 package com.endava.training;
 
-import com.endava.training.mortgage_pages.DefaultPage;
-import com.endava.training.mortgage_pages.MainCalculator;
-import com.endava.training.mortgage_pages.MainCalculatorResult;
+import com.endava.training.mortgage_pages.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +22,15 @@ public class MortgageCalculatorTest {
 
     private WebDriver driver;
     private DefaultPage defaultPage;
-    private MainCalculator mainCalculator;
-    private MainCalculatorResult mainCalculatorResult;
+    private MainCalculatorPage mainCalculator;
+    private MainCalculatorResultPage mainCalculatorResult;
+    private FinancialCalcsPage financialCalcPage;
+
+    private CarLoanPage carLoanPage;
+    private CarLoanCalculatorPage carLoanCalculatorPage;
+    private CarLoanCalculatorResultPage carLoanCalculatorResultPage;
+    private CarLoanBudgetPage carLoanBudgetPage;
+    private CarLoanBudgetResultPage carLoanBudgetResultPage;
 
     @BeforeEach
     public void setUp() {
@@ -34,13 +39,20 @@ public class MortgageCalculatorTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         defaultPage = new DefaultPage(driver);
-        mainCalculator = new MainCalculator(driver);
-        mainCalculatorResult = new MainCalculatorResult(driver);
+        mainCalculator = new MainCalculatorPage(driver);
+        mainCalculatorResult = new MainCalculatorResultPage(driver);
+        financialCalcPage = new FinancialCalcsPage(driver);
+
+        carLoanPage = new CarLoanPage(driver);
+        carLoanCalculatorPage = new CarLoanCalculatorPage(driver);
+        carLoanCalculatorResultPage = new CarLoanCalculatorResultPage(driver);
+        carLoanBudgetPage = new CarLoanBudgetPage(driver);
+        carLoanBudgetResultPage = new CarLoanBudgetResultPage(driver);
         logger.info("Setup completed.");
     }
 
     @Test
-    public void CalculateMortgage() {
+    public void calculateMortgage() {
         logger.info("Starting mortgage calculation test...");
 
         logger.info("Opening default page...");
@@ -74,6 +86,120 @@ public class MortgageCalculatorTest {
 
         logger.info("Test completed successfully.");
     }
+
+    @Test
+    public void calculateCarLoan() {
+        logger.info("Starting car loan calculation test...");
+
+        logger.info("Opening default page...");
+        defaultPage.open();
+
+        logger.info("Navigating to Car Loan Calculator...");
+        financialCalcPage.goToCarCalculator();
+
+        logger.info("Entering car price: 18000");
+        carLoanCalculatorPage.enterCarPrice("18000");
+
+        logger.info("Entering loan term: 4 years");
+        carLoanCalculatorPage.enterLoanTerm("4");
+
+        logger.info("Entering annual interest rate: 6.5%");
+        carLoanCalculatorPage.enterAnnualInterestRate("6.5");
+
+        logger.info("Entering down payment: 1500");
+        carLoanCalculatorPage.enterDownPayment("1500");
+
+        logger.info("Entering cash rebate: 750");
+        carLoanCalculatorPage.enterCashRebate("750");
+
+        logger.info("Entering trade-in value: 2500");
+        carLoanCalculatorPage.enterTradeInValue("2500");
+
+        logger.info("Entering owed on trade-in: 500");
+        carLoanCalculatorPage.enterOwedOnTradeIn("500");
+
+        logger.info("Entering sales tax rate: 7.5%");
+        carLoanCalculatorPage.enterSalesTaxRate("7.5");
+
+        logger.info("Selecting NOT to finance sales tax");
+        carLoanCalculatorPage.selectFinanceSalesTax(false);
+
+        logger.info("Clicking calculate button...");
+        carLoanCalculatorPage.clickCalculate();
+
+        logger.info("Retrieving result values...");
+        String loanAmount = carLoanCalculatorResultPage.getLoanAmount();
+        String monthlyPayment = carLoanCalculatorResultPage.getMonthlyPayment();
+        String salesTaxAmount = carLoanCalculatorResultPage.getSalesTaxAmount();
+        String interestAmount = carLoanCalculatorResultPage.getinterestAmount();
+        String totalCost = carLoanCalculatorResultPage.getTotalCost();
+
+        logger.info("Asserting expected values...");
+        assertEquals("$12,000.00", loanAmount);
+        assertEquals("$284.58", monthlyPayment);
+        assertEquals("$1,162.50", salesTaxAmount);
+        assertEquals("$1,659.81", interestAmount);
+        assertEquals("$17,572.31", totalCost);
+
+        logger.info("Car loan test completed successfully.");
+    }
+
+    @Test
+    public void calculateCarLoanBudget() {
+        logger.info("Starting car loan budget test...");
+
+        logger.info("Opening default page...");
+        defaultPage.open();
+
+        logger.info("Navigating to Car Loan Calculator...");
+        financialCalcPage.goToCarCalculator();
+
+        logger.info("Navigating to Budget Page...");
+        carLoanPage.goToBudgetPage();
+
+        logger.info("Entering monthly payment you can afford: 750");
+        carLoanBudgetPage.enterMonthlyPayment("750");
+
+        logger.info("Entering loan term: 5 years");
+        carLoanBudgetPage.enterLoanTerm("5");
+
+        logger.info("Entering annual interest rate: 6.5%");
+        carLoanBudgetPage.enterAnnualInterestRate("6.5");
+
+        logger.info("Entering down payment: 2000");
+        carLoanBudgetPage.enterDownPayment("2000");
+
+        logger.info("Entering cash rebate: 500");
+        carLoanBudgetPage.enterCashRebate("500");
+
+        logger.info("Entering trade-in value: 3000");
+        carLoanBudgetPage.enterTradeInValue("3000");
+
+        logger.info("Entering owed on trade-in: 1000");
+        carLoanBudgetPage.enterOwedOnTradeIn("1000");
+
+        logger.info("Entering sales tax rate: 8%");
+        carLoanBudgetPage.enterSalesTaxRate("8");
+
+        logger.info("Selecting to finance sales tax");
+        carLoanBudgetPage.selectFinanceSalesTax(true);
+
+        logger.info("Clicking calculate button...");
+        carLoanBudgetPage.clickCalculate();
+
+        logger.info("Retrieving result values...");
+        String affordableVehicleCost = carLoanBudgetResultPage.getAffordableVehicleCost();
+        String loanQualify = carLoanBudgetResultPage.getLoanQualify();
+        String salesTaxAmount = carLoanBudgetResultPage.getSalesTaxAmount();
+
+        logger.info("Asserting expected values...");
+        assertEquals("$39,881", affordableVehicleCost);
+        assertEquals("$38,332", loanQualify);
+        assertEquals("$2,950", salesTaxAmount);
+
+        logger.info("Car loan budget test completed successfully.");
+    }
+
 
     @AfterEach
     public void tearDown() {
