@@ -1,4 +1,4 @@
-package com.endava.training.mortgage_pages;
+package com.endava.training.mortgage_pages.CarLoan;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,8 +6,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class CarLoanBudgetResultPage {
-
-    private final WebDriver driver;
 
     @FindBy(xpath = "//tr[contains(., \"You can afford a vehicle costing\")]//input")
     WebElement affordableVehicleCost;
@@ -19,7 +17,6 @@ public class CarLoanBudgetResultPage {
     WebElement salesTaxAmount;
 
     public CarLoanBudgetResultPage(WebDriver driver) {
-        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 

@@ -1,4 +1,4 @@
-package com.endava.training.mortgage_pages;
+package com.endava.training.mortgage_pages.CarLoan;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 
 public class CarLoanCalculatorResultPage {
 
-    private final WebDriver driver;
 
     @FindBy(xpath = "//tr[contains(., \"Loan amount:\")]//input[@name=\"loanAmt\"]")
     WebElement loanAmount;
@@ -22,7 +21,6 @@ public class CarLoanCalculatorResultPage {
 
 
     public CarLoanCalculatorResultPage(WebDriver driver) {
-        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 

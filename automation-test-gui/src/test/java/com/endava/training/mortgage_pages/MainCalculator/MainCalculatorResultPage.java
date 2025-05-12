@@ -1,4 +1,4 @@
-package com.endava.training.mortgage_pages;
+package com.endava.training.mortgage_pages.MainCalculator;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 
 public class MainCalculatorResultPage {
 
-    private final WebDriver driver;
 
     @FindBy(xpath = "//div[contains(., \"Down payment amount\")]/h3")
     WebElement downPaymentAmount;
@@ -15,7 +14,6 @@ public class MainCalculatorResultPage {
     WebElement downPaymentPercentage;
 
     public MainCalculatorResultPage(WebDriver driver) {
-        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 

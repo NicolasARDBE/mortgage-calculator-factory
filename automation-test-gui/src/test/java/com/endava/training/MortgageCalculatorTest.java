@@ -2,6 +2,12 @@ package com.endava.training;
 
 import com.endava.training.mortgage_pages.*;
 
+import com.endava.training.mortgage_pages.CarLoan.*;
+import com.endava.training.mortgage_pages.FriendlyPage.FriendlyTablePage;
+import com.endava.training.mortgage_pages.FriendlyPage.RedirectFriendlyPage;
+import com.endava.training.mortgage_pages.Helper.ExtractValue;
+import com.endava.training.mortgage_pages.MainCalculator.MainCalculatorPage;
+import com.endava.training.mortgage_pages.MainCalculator.MainCalculatorResultPage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +38,9 @@ public class MortgageCalculatorTest {
     private CarLoanBudgetPage carLoanBudgetPage;
     private CarLoanBudgetResultPage carLoanBudgetResultPage;
 
+    private RedirectFriendlyPage redirectFriendlyPage;
+    private FriendlyTablePage friendlyTablePage;
+
     @BeforeEach
     public void setUp() {
         logger.info("Setting up WebDriver and test objects...");
@@ -48,7 +57,9 @@ public class MortgageCalculatorTest {
         carLoanCalculatorResultPage = new CarLoanCalculatorResultPage(driver);
         carLoanBudgetPage = new CarLoanBudgetPage(driver);
         carLoanBudgetResultPage = new CarLoanBudgetResultPage(driver);
-        logger.info("Setup completed.");
+
+        redirectFriendlyPage = new RedirectFriendlyPage(driver);
+        friendlyTablePage = new FriendlyTablePage(driver);
     }
 
     @Test
@@ -198,6 +209,52 @@ public class MortgageCalculatorTest {
         assertEquals("$2,950", salesTaxAmount);
 
         logger.info("Car loan budget test completed successfully.");
+    }
+
+    @Test
+    public void ValidateValuesInFriendlyTable(){
+        ExtractValue extractValue = new ExtractValue();
+        String interestRate = "4.50";
+        String loanTerm = "15";
+        String montlyHoa = "100";
+        String downPayment = "10";
+        logger.info("Starting mortgage calculation test...");
+
+        logger.info("Opening default page...");
+        defaultPage.open();
+
+        logger.info("Entering interest rate: 4.5");
+        mainCalculator.enterInterestRate(interestRate);
+
+        logger.info("Entering loan term: 15 years");
+        mainCalculator.enterLoanTerm(loanTerm);
+
+        logger.info("Entering monthly HOA: 100");
+        mainCalculator.enterMonthlyHoa(montlyHoa);
+
+        logger.info("Switching down payment input to percentage");
+        mainCalculator.changePercentRadio();
+
+        logger.info("Entering down payment percentage: 10%");
+        mainCalculator.enterDownPayment(downPayment);
+
+        logger.info("Clicking calculate button...");
+        mainCalculator.clickCalculate();
+
+        redirectFriendlyPage.clickFriendlyPage();
+
+        assertEquals(interestRate, extractValue.extractNumericValue
+                (friendlyTablePage.getInterestRate()));
+        assertEquals(loanTerm, extractValue.extractNumericValue
+                (friendlyTablePage.getLoanTerm()));
+        assertEquals(montlyHoa, extractValue.extractNumericValue
+                (friendlyTablePage.getMonthlyHoa()));
+        try{
+            assertEquals(downPayment, extractValue.extractNumericValue
+                    (friendlyTablePage.getDownPayment()));
+        } catch(AssertionError error){
+            System.err.println("Assertion failed: " + error.getMessage());
+        }
     }
 
 

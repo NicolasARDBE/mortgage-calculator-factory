@@ -1,4 +1,4 @@
-package com.endava.training.mortgage_pages;
+package com.endava.training.mortgage_pages.CarLoan;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,38 +6,36 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-public class CarLoanBudgetPage {
-    private final WebDriver driver;
+public class CarLoanCalculatorPage {
 
-    @FindBy(xpath = "//tr[contains(., \"Monthly payment\")]//input[@type = \"number\"]")
-    WebElement monthlyPaymentField;
-    @FindBy(xpath = "//tr[contains(., \"Loan term (years)\")]//input[@type = \"number\"]")
+    @FindBy(xpath = "//tr[contains(., \"Car price\")]//input[@type = \"number\"]")
+    WebElement carPriceField;
+    @FindBy(xpath = "//tr[contains(., \"Loan term\")]//input[@name= \"payments\"]")
     WebElement loanTermField;
-    @FindBy(xpath = "//tr[contains(., \"Annual interest rate\")]//input[@type = \"number\"]")
-    WebElement annualInterestRateField;
-    @FindBy(xpath = "//tr[contains(., \"Sales tax rate\")]//input[@type = \"number\"]")
+    @FindBy(xpath = "//tr[contains(., \"Interest Rate\")]//input[@type = \"number\"]")
+    WebElement interestRateField;
+    @FindBy(xpath = "//tr[contains(., \"Sales Tax %\")]//input[@type = \"number\"]")
     WebElement salesTaxRateField;
-    @FindBy(xpath = "//tr[contains(., \"Finance\")]//select")
+    @FindBy(xpath = "//tr[contains(., \"Add sales taxes into loan\")]//select")
     WebElement financeSalesTaxSelector;
-    @FindBy(xpath = "//tr[contains(., \"Your down payment\")]//input")
+    @FindBy(xpath = "//tr[contains(., \"Down payment\")]//input")
     WebElement downPaymentField;
-    @FindBy(xpath = "//tr[contains(., \"Cash rebate added to down payment\")]//input")
+    @FindBy(xpath = "//tr[contains(., \"Rebate $\")]//input")
     WebElement cashRebateField;
-    @FindBy(xpath = "//tr[contains(., \"Trade-in value\")]//input")
+    @FindBy(xpath = "//tr[contains(., \"Trade-in allowance\")]//input")
     WebElement tradeInValueField;
-    @FindBy(xpath = "//tr[contains(., \"Owed on trade-in\")]//input[@name=\"tradeInNeg\"]")
+    @FindBy(xpath = "//tr[contains(., \"Owed on trade-in\")]//input[@name=\"tradein\"]")
     WebElement owedOnTrainField;
-    @FindBy(xpath = "//form[contains(., \"Auto Loan Structure\")]//input[@type=\"button\"]")
+    @FindBy(xpath = "//table[@class=\"sortable\"]//input[@value=\"Calculate\" and @onclick=\"computeForm(this.form)\"]")
     WebElement calculateButton;
 
 
-    public CarLoanBudgetPage(WebDriver driver) {
-        this.driver = driver;
+    public CarLoanCalculatorPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
-    public void enterMonthlyPayment(String amount) {
-        monthlyPaymentField.sendKeys(amount);
+    public void enterCarPrice(String amount) {
+        carPriceField.sendKeys(amount);
     }
 
     public void enterLoanTerm(String years) {
@@ -45,7 +43,7 @@ public class CarLoanBudgetPage {
     }
 
     public void enterAnnualInterestRate(String rate) {
-        annualInterestRateField.sendKeys(rate);
+        interestRateField.sendKeys(rate);
     }
 
     public void enterSalesTaxRate(String rate) {
@@ -76,4 +74,6 @@ public class CarLoanBudgetPage {
     public void clickCalculate() {
         calculateButton.click();
     }
+
+
 }
