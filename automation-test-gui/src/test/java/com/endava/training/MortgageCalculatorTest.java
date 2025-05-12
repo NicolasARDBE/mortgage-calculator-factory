@@ -3,6 +3,9 @@ package com.endava.training;
 import com.endava.training.mortgage_pages.*;
 
 import com.endava.training.mortgage_pages.CarLoan.*;
+import com.endava.training.mortgage_pages.CheckLenders.LendersParametersPage;
+import com.endava.training.mortgage_pages.CheckLenders.RedirectLenderPage;
+import com.endava.training.mortgage_pages.CheckLenders.ValidateVendor;
 import com.endava.training.mortgage_pages.FriendlyPage.FriendlyTablePage;
 import com.endava.training.mortgage_pages.FriendlyPage.RedirectFriendlyPage;
 import com.endava.training.mortgage_pages.Helper.ExtractValue;
@@ -41,6 +44,10 @@ public class MortgageCalculatorTest {
     private RedirectFriendlyPage redirectFriendlyPage;
     private FriendlyTablePage friendlyTablePage;
 
+    private LendersParametersPage lendersParametersPage;
+    private RedirectLenderPage redirectLenderPage;
+    private ValidateVendor validateVendor;
+
     @BeforeEach
     public void setUp() {
         logger.info("Setting up WebDriver and test objects...");
@@ -60,6 +67,10 @@ public class MortgageCalculatorTest {
 
         redirectFriendlyPage = new RedirectFriendlyPage(driver);
         friendlyTablePage = new FriendlyTablePage(driver);
+
+        lendersParametersPage = new LendersParametersPage(driver);
+        redirectLenderPage = new RedirectLenderPage(driver);
+        validateVendor = new ValidateVendor(driver);
     }
 
     @Test
@@ -218,31 +229,14 @@ public class MortgageCalculatorTest {
         String loanTerm = "15";
         String montlyHoa = "100";
         String downPayment = "10";
-        logger.info("Starting mortgage calculation test...");
-
-        logger.info("Opening default page...");
         defaultPage.open();
-
-        logger.info("Entering interest rate: 4.5");
         mainCalculator.enterInterestRate(interestRate);
-
-        logger.info("Entering loan term: 15 years");
         mainCalculator.enterLoanTerm(loanTerm);
-
-        logger.info("Entering monthly HOA: 100");
         mainCalculator.enterMonthlyHoa(montlyHoa);
-
-        logger.info("Switching down payment input to percentage");
         mainCalculator.changePercentRadio();
-
-        logger.info("Entering down payment percentage: 10%");
         mainCalculator.enterDownPayment(downPayment);
-
-        logger.info("Clicking calculate button...");
         mainCalculator.clickCalculate();
-
         redirectFriendlyPage.clickFriendlyPage();
-
         assertEquals(interestRate, extractValue.extractNumericValue
                 (friendlyTablePage.getInterestRate()));
         assertEquals(loanTerm, extractValue.extractNumericValue
@@ -255,6 +249,19 @@ public class MortgageCalculatorTest {
         } catch(AssertionError error){
             System.err.println("Assertion failed: " + error.getMessage());
         }
+    }
+
+    @Test
+    public void ValidateLenderRedirection(){
+        ExtractValue extractValue = new ExtractValue();
+        defaultPage.open();
+        lendersParametersPage.enterZipCode("07008");
+        lendersParametersPage.selectCreditScore("620");
+        lendersParametersPage.clickOnUpdateLenders();
+        lendersParametersPage.clickOnViewDetails();
+        //Acortar la URL hasta el .com
+        assertEquals("https://cash-out-refinance-icbv3.greenlending.com",
+                extractValue.extractBaseUrl(validateVendor.getCurrentUrl()));
     }
 
 
