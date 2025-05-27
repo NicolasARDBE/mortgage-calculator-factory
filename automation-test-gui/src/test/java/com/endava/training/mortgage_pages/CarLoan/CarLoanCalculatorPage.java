@@ -1,5 +1,6 @@
 package com.endava.training.mortgage_pages.CarLoan;
 
+import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,6 +8,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 public class CarLoanCalculatorPage {
+
+    WebDriver driver = DriverSingleton.getDriver();
 
     @FindBy(xpath = "//tr[contains(., \"Car price\")]//input[@type = \"number\"]")
     WebElement carPriceField;
@@ -30,7 +33,7 @@ public class CarLoanCalculatorPage {
     WebElement calculateButton;
 
 
-    public CarLoanCalculatorPage(WebDriver driver) {
+    public CarLoanCalculatorPage() {
         PageFactory.initElements(driver, this);
     }
 

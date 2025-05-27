@@ -1,4 +1,4 @@
-package com.endava.training.mortgage_pages.Helper;
+package com.endava.training.Helper;
 
 public class ExtractValue {
     public String extractNumericValue(String input) {

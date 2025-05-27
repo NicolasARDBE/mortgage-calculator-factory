@@ -1,5 +1,6 @@
 package com.endava.training;
 
+import com.endava.training.Singleton.DriverSingleton;
 import com.endava.training.mortgage_pages.*;
 
 import com.endava.training.mortgage_pages.CarLoan.*;
@@ -7,7 +8,7 @@ import com.endava.training.mortgage_pages.CheckLenders.LendersParametersPage;
 import com.endava.training.mortgage_pages.CheckLenders.ValidateVendor;
 import com.endava.training.mortgage_pages.FriendlyPage.FriendlyTablePage;
 import com.endava.training.mortgage_pages.FriendlyPage.RedirectFriendlyPage;
-import com.endava.training.mortgage_pages.Helper.ExtractValue;
+import com.endava.training.Helper.ExtractValue;
 import com.endava.training.mortgage_pages.MainCalculator.MainCalculatorPage;
 import com.endava.training.mortgage_pages.MainCalculator.MainCalculatorResultPage;
 import org.junit.jupiter.api.AfterEach;
@@ -28,7 +29,7 @@ public class MortgageCalculatorTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MortgageCalculatorTest.class);
 
-    private WebDriver driver;
+    private WebDriver driver = DriverSingleton.getDriver();
     private DefaultPage defaultPage;
     private MainCalculatorPage mainCalculator;
     private MainCalculatorResultPage mainCalculatorResult;
@@ -50,24 +51,23 @@ public class MortgageCalculatorTest {
     public void setUp() {
         logger.info("Setting up WebDriver and test objects...");
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
         driver.manage().window().maximize();
-        defaultPage = new DefaultPage(driver);
-        mainCalculator = new MainCalculatorPage(driver);
-        mainCalculatorResult = new MainCalculatorResultPage(driver);
-        financialCalcPage = new FinancialCalcsPage(driver);
+        defaultPage = new DefaultPage();
+        mainCalculator = new MainCalculatorPage();
+        mainCalculatorResult = new MainCalculatorResultPage();
+        financialCalcPage = new FinancialCalcsPage();
 
-        carLoanPage = new CarLoanPage(driver);
-        carLoanCalculatorPage = new CarLoanCalculatorPage(driver);
-        carLoanCalculatorResultPage = new CarLoanCalculatorResultPage(driver);
-        carLoanBudgetPage = new CarLoanBudgetPage(driver);
-        carLoanBudgetResultPage = new CarLoanBudgetResultPage(driver);
+        carLoanPage = new CarLoanPage();
+        carLoanCalculatorPage = new CarLoanCalculatorPage();
+        carLoanCalculatorResultPage = new CarLoanCalculatorResultPage();
+        carLoanBudgetPage = new CarLoanBudgetPage();
+        carLoanBudgetResultPage = new CarLoanBudgetResultPage();
 
-        redirectFriendlyPage = new RedirectFriendlyPage(driver);
-        friendlyTablePage = new FriendlyTablePage(driver);
+        redirectFriendlyPage = new RedirectFriendlyPage();
+        friendlyTablePage = new FriendlyTablePage();
 
-        lendersParametersPage = new LendersParametersPage(driver);
-        validateVendor = new ValidateVendor(driver);
+        lendersParametersPage = new LendersParametersPage();
+        validateVendor = new ValidateVendor();
     }
 
     @Test
@@ -302,7 +302,7 @@ public class MortgageCalculatorTest {
     public void tearDown() {
         logger.info("Tearing down WebDriver...");
         if (driver != null) {
-            driver.quit();
+            DriverSingleton.quitDriver();
         }
         logger.info("Driver closed.");
     }

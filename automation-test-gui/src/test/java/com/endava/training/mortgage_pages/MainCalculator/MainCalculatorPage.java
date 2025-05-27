@@ -1,11 +1,14 @@
 package com.endava.training.mortgage_pages.MainCalculator;
 
+import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class MainCalculatorPage {
+
+    WebDriver driver = DriverSingleton.getDriver();
 
     @FindBy(id = "intrstsrate")
     WebElement interestRateField;
@@ -20,7 +23,7 @@ public class MainCalculatorPage {
     @FindBy(css = "div.rw-box.button > input")
     WebElement calculateButton;
 
-    public MainCalculatorPage(WebDriver driver) {
+    public MainCalculatorPage() {
         PageFactory.initElements(driver, this);
     }
 

@@ -1,11 +1,15 @@
 package com.endava.training.mortgage_pages.FriendlyPage;
 
+import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class FriendlyTablePage {
+
+    WebDriver driver = DriverSingleton.getDriver();
+
     @FindBy(xpath = "//tr[contains(., \"Interest rate\")]/td")
     WebElement interestRateField;
     @FindBy(xpath = "//tr[contains(., \"Loan term\")]/td")
@@ -15,7 +19,7 @@ public class FriendlyTablePage {
     @FindBy(xpath = "//tr[contains(., \"Down payment:\")]/td")
     WebElement downPaymentField;
 
-    public FriendlyTablePage(WebDriver driver) {
+    public FriendlyTablePage() {
         PageFactory.initElements(driver, this);
     }
     public String getInterestRate() {

@@ -1,5 +1,6 @@
 package com.endava.training.mortgage_pages.CheckLenders;
 
+import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class LendersParametersPage {
-    private final WebDriver driver;
+    WebDriver driver = DriverSingleton.getDriver();
+    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     @FindBy(css = "div#rtable > iframe")
     WebElement iframe;
     @FindBy(id = "rate-table-zip")
@@ -23,13 +25,11 @@ public class LendersParametersPage {
     @FindBy(xpath = "(//a[contains(text(),'View Details')])[1]")
     WebElement viewDetailsButton;
 
-    public LendersParametersPage(WebDriver driver) {
-        this.driver = driver;
+    public LendersParametersPage() {
         PageFactory.initElements(driver, this);
     }
 
     public void enterZipCode(String zipCode) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iframe));
         wait.until(ExpectedConditions.elementToBeClickable(zipCodeField));
         zipCodeField.clear();
@@ -45,7 +45,6 @@ public class LendersParametersPage {
         updateLendersButton.click();
     }
     public void clickOnViewDetails(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(viewDetailsButton));
         String originalWindow = driver.getWindowHandle();
         viewDetailsButton.click();

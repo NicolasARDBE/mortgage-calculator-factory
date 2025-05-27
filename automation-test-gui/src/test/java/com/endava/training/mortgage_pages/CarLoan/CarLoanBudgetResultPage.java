@@ -1,11 +1,14 @@
 package com.endava.training.mortgage_pages.CarLoan;
 
+import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class CarLoanBudgetResultPage {
+
+    WebDriver driver = DriverSingleton.getDriver();
 
     @FindBy(xpath = "//tr[contains(., \"You can afford a vehicle costing\")]//input")
     WebElement affordableVehicleCost;
@@ -16,7 +19,7 @@ public class CarLoanBudgetResultPage {
     @FindBy(xpath = "//tr[contains(., \"Sales tax amount\")]//input")
     WebElement salesTaxAmount;
 
-    public CarLoanBudgetResultPage(WebDriver driver) {
+    public CarLoanBudgetResultPage() {
         PageFactory.initElements(driver, this);
     }
 
