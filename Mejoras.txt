@@ -1,0 +1,5 @@
+Mejoras identificadas:
+Uso del patrón Singleton:
+Se implementa el patrón Singleton para gestionar una única instancia de WebDriver durante la ejecución de todas las pruebas. Esto permite reutilizar el mismo navegador entre diferentes pruebas y mantener un control centralizado sobre su ciclo de vida. La implementación se encuentra en la carpeta denominada "Singleton".
+Uso del patrón Facade:
+Se aplica el patrón Facade para encapsular y simplificar la ejecución de pasos complejos dentro de las pruebas. Esto permite que los métodos anotados con @Test se enfoquen únicamente en las validaciones (asserts), delegando toda la lógica de interacción con la aplicación a una capa intermedia. Esta implementación está ubicada en la carpeta "Facade".
