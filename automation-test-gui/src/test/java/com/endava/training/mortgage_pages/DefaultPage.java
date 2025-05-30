@@ -1,14 +1,14 @@
 package com.endava.training.mortgage_pages;
 
-import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 public class DefaultPage {
 
-    WebDriver driver = DriverSingleton.getDriver();
+    private final WebDriver driver;
 
-    public DefaultPage() {
+    public DefaultPage(WebDriver driver) {
+        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 

@@ -1,6 +1,5 @@
 package com.endava.training.mortgage_pages;
 
-import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,8 +12,7 @@ import java.time.Duration;
 
 public class FinancialCalcsPage {
 
-    WebDriver driver = DriverSingleton.getDriver();
-    private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private final WebDriver driver;
 
     @FindBy(linkText = "Financial Calcs")
     WebElement financialCalcsMenu;
@@ -22,11 +20,13 @@ public class FinancialCalcsPage {
     @FindBy(linkText = "Car")
     WebElement carLink;
 
-    public FinancialCalcsPage() {
+    public FinancialCalcsPage(WebDriver driver) {
+        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
     public void goToCarCalculator() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         new Actions(driver).moveToElement(financialCalcsMenu).perform();
         wait.until(ExpectedConditions.elementToBeClickable(carLink)).click();
     }

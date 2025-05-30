@@ -1,6 +1,5 @@
 package com.endava.training.mortgage_pages.FriendlyPage;
 
-import com.endava.training.Singleton.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,12 +10,13 @@ import java.time.Duration;
 
 public class RedirectFriendlyPage {
 
-    WebDriver driver = DriverSingleton.getDriver();
+    private final WebDriver driver;
 
     @FindBy(css = "input[value=\"Printer Friendly Page\"]")
     WebElement friendlyPageButton;
 
-    public RedirectFriendlyPage() {
+    public RedirectFriendlyPage(WebDriver driver) {
+        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
